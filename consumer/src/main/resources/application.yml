@@ -13,3 +13,8 @@ logging:
             RestTemplate: debug
     httpclient:
       wire: debug
+
+trust:
+  store:
+    classpath: classpath:keystore/key.p12
+    password: password

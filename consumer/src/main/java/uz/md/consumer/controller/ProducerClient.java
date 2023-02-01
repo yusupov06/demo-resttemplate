@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 import uz.md.consumer.entity.Product;
-import uz.md.consumer.feignClients.ProducerServiceClient;
 
 import java.util.List;
 
@@ -23,14 +22,19 @@ import java.util.List;
 public class ProducerClient {
 
     private final RestTemplate restTemplate;
-
-    private final ProducerServiceClient producerServiceClient;
-
     public static final String PRODUCER_SERVICE_URL = "http://localhost:8081/product";
+    private static final String WELCOME_URL = "https://reqres.in/api/users?page=2";
 
-    public ProducerClient(RestTemplate restTemplate, ProducerServiceClient producerServiceClient) {
+
+    public ProducerClient(RestTemplate restTemplate) {
         this.restTemplate = restTemplate;
-        this.producerServiceClient = producerServiceClient;
+    }
+
+    @GetMapping("/welcome")
+    public String greetMessage() {
+        String response = restTemplate.getForObject(WELCOME_URL, String.class);
+        System.out.println(response);
+        return response;
     }
 
     @GetMapping
@@ -49,11 +53,6 @@ public class ProducerClient {
         return ResponseEntity
                 .status(HttpStatus.valueOf(200))
                 .body(response.getBody());
-    }
-
-    @GetMapping("/all")
-    public ResponseEntity<List<Product>> getAllByFeign() {
-        return producerServiceClient.allProducts();
     }
 
     @GetMapping("/add")
