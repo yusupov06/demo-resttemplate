@@ -1,0 +1,16 @@
+server:
+  port: 8081
+
+
+logging:
+  level:
+    org:
+      apache:
+        http: DEBUG
+
+      springframework:
+        web:
+          client:
+            RestTemplate: DEBUG
+    httpclient:
+      wire: DEBUG
